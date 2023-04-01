@@ -1,0 +1,48 @@
+
+
+
+
+
+
+
+
+- name: Update SSL certificates proxmox ve
+  hosts:
+    - proxmox-ceph
+  tasks:
+    - name: Copy SSL certificate to host
+      copy:
+        src: "/root/.acme.sh/*.discloud.nl_ecc/fullchain.cer"
+        dest: "/etc/pve/local/pve-ssl.pem"
+
+    - name: Copy SSL key to host
+      copy:
+        src: "/root/.acme.sh/*.discloud.nl_ecc/*.discloud.nl.key"
+        dest: "/etc/pve/local/pve-ssl.key"
+
+    - name: Restart proxy service when certs change
+      service:
+        name: "pveproxy"
+        state: restarted
+
+- name: Update SSL certificates spam
+  hosts:
+    - spam
+  tasks:
+    - name: Copy SSL certificate to host
+      copy:
+        src: "/tmp/pmg-tls.pem"
+        dest: "/etc/pmg/pmg-tls.pem"
+
+    - name: Copy SSL key to host
+      copy:
+        src: "/tmp/pmg-api.pem"
+        dest: "/etc/pmg/pmg-api.pem"
+
+    - name: Restart proxy service when certs change
+      service:
+        name: "pmgproxy"
+        state: restarted
+
+    - name: replace fingerprint on spam
+      command: pmgcm update-fingerprint

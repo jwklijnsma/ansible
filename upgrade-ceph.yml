@@ -1,0 +1,73 @@
+---
+- hosts: proxmox-ceph
+  serial: 1
+  vars:
+    ceph_repo: "quincy"
+  tasks:
+    - name: Enable msgrv2 protocol
+      command: ceph mon enable-msgr2
+
+    - name: Clear error's
+      command: ceph crash archive-all
+
+    - name: Change Ceph repository to {{ ceph_repo }}
+      replace:
+        path: /etc/apt/sources.list.d/ceph.list
+        regexp: pacific
+        replace: "{{ ceph_repo }}"
+
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade Ceph packages to {{ ceph_repo }} version
+      apt:
+        name: "*ceph*"
+        state: latest
+
+    - name: Restart ceph-mon daemon
+      systemd:
+        name: ceph-mon.target
+        state: restarted
+
+    #- name: Run ceph mon dump command and capture output
+    #  shell: ceph mon dump | grep min_mon_release
+    #  register: ceph_output
+
+    #- name: Check if ceph-mon is upgraded to Pacific
+    #  fail:
+    #    msg: "ceph-mon is not upgraded to Pacific release"
+    #  when: "'min_mon_release 16 (pacific)' not in ceph_output.stdout"
+
+    - name: Restart ceph-mgr daemon
+      systemd:
+        name: ceph-mgr.target
+        state: restarted
+
+    - name: Restart ceph-osd daemon
+      systemd:
+        name: ceph-osd.target
+        state: restarted
+
+    - name: Wait for HEALTH_OK status
+      shell: ceph status
+      register: ceph_status
+      until: ceph_status.stdout_lines | join('') | regex_search('HEALTH_OK')
+      retries: 60
+      delay: 10
+
+
+    - name: Disable standby_replay for each CephFS file system
+      command: ceph fs set {{ item }} allow_standby_replay false
+      with_items:
+        - cephfs
+        - kubePoolfs
+
+    - name: Reduce the number of ranks to 1 for each CephFS file system
+      command: ceph fs set {{ item }} max_mds 1
+      with_items:
+        - cephfs
+        - kubePoolfs
+
+    - name: Clear error's
+      command: ceph crash archive-all

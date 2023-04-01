@@ -17,9 +17,6 @@
       apt:
         upgrade: yes
 
-    - name: Queue DirectAdmin update
-      command: echo "action=update&value=program" >> /usr/local/directadmin/data/task.queue
-
 - name: Update directadmin
   hosts:
     - directadmin
@@ -29,6 +26,9 @@
 
     - name: Install all pending updates
       command: /usr/local/directadmin/custombuild/build update_versions
+
+    - name: Queue DirectAdmin update
+      command: echo "action=update&value=program" >> /usr/local/directadmin/data/task.queue  
 
 - name: Restart Ceph services
   hosts:

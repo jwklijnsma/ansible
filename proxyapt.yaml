@@ -1,0 +1,8 @@
+---
+- name: add proxy for apt
+  hosts: all
+  tasks:
+  - name: Add proxy to apt
+    ansible.builtin.copy:
+      content: Acquire::https::Proxy "http://apt.cloud.discloud.biz";
+      dest: /etc/apt/apt.conf.d/00aptproxy

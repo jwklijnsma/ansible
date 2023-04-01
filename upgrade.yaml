@@ -1,0 +1,44 @@
+---
+- name: Upgrade servers
+  hosts:
+    - directadmin
+    - spam
+    - promotheus
+    - proxmox-ceph
+    - proxmox
+    - lb
+    - utils
+  tasks:
+    - name: Update package index
+      apt:
+        update_cache: yes
+
+    - name: Upgrade system packages
+      apt:
+        upgrade: yes
+
+    - name: Queue DirectAdmin update
+      command: echo "action=update&value=program" >> /usr/local/directadmin/data/task.queue
+
+- name: Update directadmin
+  hosts:
+    - directadmin
+  tasks:
+    - name: Update DirectAdmin
+      command: /usr/local/directadmin/custombuild/build update
+
+    - name: Install all pending updates
+      command: /usr/local/directadmin/custombuild/build update_versions
+
+- name: Restart Ceph services
+  hosts:
+    - proxmox-ceph
+  tasks:
+    - name: Restart Ceph services
+      service:
+        name: "{{ item }}.target"
+        state: restarted
+      loop:
+        - ceph-mon
+        - ceph-mgr
+        - ceph-osd

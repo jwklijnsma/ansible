@@ -1,0 +1,7 @@
+
+- name: Clear ceph crash archive-all
+  hosts:
+    - proxmox-ceph
+  tasks:
+    - name: Restart Ceph services
+      command: ceph crash archive-all

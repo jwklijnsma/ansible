@@ -25,16 +25,19 @@
     cert_files:
       - "{{ cert_path }}/*.discloud.nl_ecc/fullchain.cer"
       - "{{ cert_path }}/*.discloud.nl_ecc/*.discloud.nl.key"
-    output_file: 
-      - "pmg-tls.pem"
-      - "pmg-api.pem"
   tasks:
-    - name: Combine SSL Certs put on the mx servers
+    - name: Combine SSL Certs for pmg-tls.pem
       copy:
         content: "{{ lookup('file', item) }}"
-        dest: "{{ output_file }}"
-      loop: "/etc/pmg/{{ cert_files }}"
- 
+        dest: /etc/pmg/pmg-tls.pem
+      with_items: "{{ cert_files }}"  
+      
+    - name: Combine SSL Certs for pmg-api.pem
+      copy:
+        content: "{{ lookup('file', item) }}"
+        dest: /etc/pmg/pmg-api.pem
+      with_items: "{{ cert_files }}"        
+            
     - name: Restart proxy service when certs change
       service:
         name: "pmgproxy"

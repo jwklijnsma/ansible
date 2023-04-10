@@ -4,12 +4,12 @@
   tasks:
     - name: Copy SSL certificate to host
       copy:
-        src: "/root/.acme.sh/*.discloud.nl_ecc/fullchain.cer"
+        src: "/root/acme/ssl/*.discloud.nl_ecc/fullchain.cer"
         dest: "/etc/pve/local/pve-ssl.pem"
 
     - name: Copy SSL key to host
       copy:
-        src: "/root/.acme.sh/*.discloud.nl_ecc/*.discloud.nl.key"
+        src: "/root/acme/ssl/*.discloud.nl_ecc/*.discloud.nl.key"
         dest: "/etc/pve/local/pve-ssl.key"
 
     - name: Restart proxy service when certs change
@@ -21,6 +21,12 @@
   hosts:
     - spam
   tasks:
+    - name: Put cer and key the pmg-tls pem
+      command: cat /root/acme/ssl/*.discloud.nl_ecc/fullchain.cer /root/acme/ssl/*.discloud.nl_ecc/*.discloud.nl.key > /tmp/pmg-tls.pem
+
+    - name: Put cer and key the pmg-tls pem
+      command: cat /root/acme/ssl/*.discloud.nl_ecc/fullchain.cer /root/acme/ssl/*.discloud.nl_ecc/*.discloud.nl.key > /tmp/pmg-api.pem
+ 
     - name: Copy SSL certificate to host
       copy:
         src: "/tmp/pmg-tls.pem"

@@ -20,12 +20,18 @@
 - name: Update SSL certificates spam
   hosts:
     - spam
+  vars:
+    cert_path: "/tmp/ssl"
+    cert_files:
+      - "{{ cert_path }}/*.discloud.nl_ecc/fullchain.cer"
+      - "{{ cert_path }}/*.discloud.nl_ecc/*.discloud.nl.key"
+    output_file: "{{ cert_path }}/*.discloud.nl_ecc/pmg-tls.pem"
   tasks:
-    - name: Put cer and key the pmg-tls pem
-      shell: cat /tmp/ssl/*.discloud.nl_ecc/fullchain.cer /tmp/ssl/*.discloud.nl_ecc/*.discloud.nl.key > /tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem
-
-    - name: Put cer and key the pmg-tls pem
-      shell: cat /tmp/ssl/*.discloud.nl_ecc/fullchain.cer /tmp/ssl/*.discloud.nl_ecc/*.discloud.nl.key > /tmp/ssl/*.discloud.nl_ecc/pmg-api.pem
+    - name: Combine SSL Certs
+      copy:
+        content: "{{ lookup('file', item) }}"
+        dest: "{{ output_file }}"
+      with_items: "{{ cert_files }}"
  
     - name: Copy SSL certificate to host
       copy:
@@ -34,7 +40,7 @@
 
     - name: Copy SSL key to host
       copy:
-        src: "/tmp/ssl/*.discloud.nl_ecc/pmg-api.pem"
+        src: "/tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem"
         dest: "/etc/pmg/pmg-api.pem"
 
     - name: Restart proxy service when certs change

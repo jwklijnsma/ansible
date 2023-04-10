@@ -25,7 +25,7 @@
     cert_files:
       - "{{ cert_path }}/*.discloud.nl_ecc/fullchain.cer"
       - "{{ cert_path }}/*.discloud.nl_ecc/*.discloud.nl.key"
-    output_file: "{{ cert_path }}/*.discloud.nl_ecc/pmg-tls.pem"
+    output_file: "/tmp/pmg-tls.pem"
   tasks:
     - name: Combine SSL Certs
       copy:
@@ -35,12 +35,12 @@
  
     - name: Copy SSL certificate to host
       copy:
-        src: "/tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem"
+        src: "/tmp/pmg-tls.pem"
         dest: "/etc/pmg/pmg-tls.pem"
 
     - name: Copy SSL key to host
       copy:
-        src: "/tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem"
+        src: "/tmp/pmg-tls.pem"
         dest: "/etc/pmg/pmg-api.pem"
 
     - name: Restart proxy service when certs change

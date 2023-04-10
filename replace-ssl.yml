@@ -26,8 +26,8 @@
       - "{{ cert_path }}/*.discloud.nl_ecc/fullchain.cer"
       - "{{ cert_path }}/*.discloud.nl_ecc/*.discloud.nl.key"
     output_file: 
-      - /etc/pmg/pmg-tls.pem
-      - /etc/pmg/pmg-api.pem
+      - "/etc/pmg/pmg-tls.pem"
+      - "/etc/pmg/pmg-api.pem"
   tasks:
     - name: Combine SSL Certs put on the mx servers
       copy:

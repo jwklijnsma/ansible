@@ -22,10 +22,10 @@
     - spam
   tasks:
     - name: Put cer and key the pmg-tls pem
-      command: cat /tmp/ssl/*.discloud.nl_ecc/fullchain.cer /tmp/ssl/*.discloud.nl_ecc/*.discloud.nl.key > /tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem
+      shell: cat /tmp/ssl/*.discloud.nl_ecc/fullchain.cer /tmp/ssl/*.discloud.nl_ecc/*.discloud.nl.key > /tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem
 
     - name: Put cer and key the pmg-tls pem
-      command: cat /tmp/ssl/*.discloud.nl_ecc/fullchain.cer /tmp/ssl/*.discloud.nl_ecc/*.discloud.nl.key > /tmp/ssl/*.discloud.nl_ecc/pmg-api.pem
+      shell: cat /tmp/ssl/*.discloud.nl_ecc/fullchain.cer /tmp/ssl/*.discloud.nl_ecc/*.discloud.nl.key > /tmp/ssl/*.discloud.nl_ecc/pmg-api.pem
  
     - name: Copy SSL certificate to host
       copy:

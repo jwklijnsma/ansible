@@ -29,13 +29,13 @@
     - name: Combine SSL Certs for pmg-tls.pem
       copy:
         content: "{{ lookup('file', item) }}"
-        dest: /etc/pmg/pmg-tls.pem
+        dest: "/etc/pmg/pmg-tls.pem"
       with_items: "{{ cert_files }}"  
       
     - name: Combine SSL Certs for pmg-api.pem
       copy:
         content: "{{ lookup('file', item) }}"
-        dest: /etc/pmg/pmg-api.pem
+        dest: "/etc/pmg/pmg-api.pem"
       with_items: "{{ cert_files }}"        
             
     - name: Restart proxy service when certs change

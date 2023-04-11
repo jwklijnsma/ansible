@@ -21,14 +21,14 @@
   hosts:
     - spam
   tasks:
-    - name: Combine SSL Certs for pmg-tls.pem
+    - name: Copy SSL certificate to host
       copy:
-        src:: "/tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem"
+        src: "/tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem"
         dest: "/etc/pmg/pmg-tls.pem"
-      
-    - name: Combine SSL Certs for pmg-api.pem
+
+    - name: Copy SSL key to host
       copy:
-        src:: "/tmp/ssl/*.discloud.nl_ecc/pmg-api.pem"
+        src: "/tmp/ssl/*.discloud.nl_ecc/pmg-api.pem"
         dest: "/etc/pmg/pmg-api.pem"       
             
     - name: Restart proxy service when certs change

@@ -25,7 +25,6 @@
       copy:
         content: "/tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem"
         dest: "/etc/pmg/pmg-tls.pem"
-      with_items: "{{ cert_files }}"  
       
     - name: Combine SSL Certs for pmg-api.pem
       copy:

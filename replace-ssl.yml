@@ -20,23 +20,17 @@
 - name: Update SSL certificates spam
   hosts:
     - spam
-  vars:
-    cert_path: "/tmp/ssl"
-    cert_files:
-      - "{{ cert_path }}/*.discloud.nl_ecc/fullchain.cer"
-      - "{{ cert_path }}/*.discloud.nl_ecc/*.discloud.nl.key"
   tasks:
     - name: Combine SSL Certs for pmg-tls.pem
       copy:
-        content: "{{ lookup('file', item) }}"
+        content: "/tmp/ssl/*.discloud.nl_ecc/pmg-tls.pem"
         dest: "/etc/pmg/pmg-tls.pem"
       with_items: "{{ cert_files }}"  
       
     - name: Combine SSL Certs for pmg-api.pem
       copy:
-        content: "{{ lookup('file', item) }}"
-        dest: "/etc/pmg/pmg-api.pem"
-      with_items: "{{ cert_files }}"        
+        content: "/tmp/ssl/*.discloud.nl_ecc/pmg-api.pem"
+        dest: "/etc/pmg/pmg-api.pem"       
             
     - name: Restart proxy service when certs change
       service:

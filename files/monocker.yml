@@ -1,0 +1,16 @@
+version: '2.4'
+services:
+  monocker:
+    container_name: monocker
+    image: petersem/monocker
+    environment:
+      SERVER_LABEL: '"{{ ansible_host }} {{ inventory_hostname }}"'
+      MESSAGE_PLATFORM: 'telegram@5084612098:AAGfOKhxb0ZQ5XCzaYRtFKSS3ypUv-f6LSY@14794926'
+      LABEL_ENABLE: 'false'
+      ONLY_OFFLINE_STATES: 'false'
+      EXCLUDE_EXITED: 'false'
+      PERIOD: 10
+      DISABLE_STARTUP_MSG: 'false'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped

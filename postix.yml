@@ -1,0 +1,20 @@
+---
+- name: Configure Postfix
+  hosts: all
+  vars:
+    template_src: /path/to/postfix_template.cfg.j2
+    dest: /etc/postfix/main.cf
+  tasks:
+    - name: Generate Postfix configuration from template
+      template:
+        src: "{{ template_src }}"
+        dest: "{{ dest }}"
+      notify: Restart Postfix
+    - name: Copy Postfix configuration to server
+      copy:
+        src: "{{ dest }}"
+        dest: "{{ dest }}"
+    - name: Restart Postfix
+      service:
+        name: postfix
+        state: restarted

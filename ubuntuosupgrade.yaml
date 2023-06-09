@@ -17,5 +17,4 @@
 
     - name: Upgrade server
       shell: do-release-upgrade -f DistUpgradeViewNonInteractive
-      args:
-        warn: false
+      ignore_errors: yes 

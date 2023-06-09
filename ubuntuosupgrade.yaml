@@ -1,0 +1,21 @@
+---
+- name: Reboot and Upgrade Server
+  hosts: s3storage
+  serial: 1
+  gather_facts: false
+
+  tasks:
+    - name: Reboot the server
+      reboot:
+        reboot_timeout: 300
+        pre_reboot_delay: 0
+
+    - name: Wait for server to come back online
+      wait_for_connection:
+        delay: 30
+        timeout: 600
+
+    - name: Upgrade server
+      shell: do-release-upgrade -f DistUpgradeViewNonInteractive
+      args:
+        warn: false

@@ -11,6 +11,7 @@
     - lb-k8s-ek
     - lb-k8s-alleninkt
     - lb-k8s-tixwaves
+    - s3storage
   tasks:
     - name: Update package index
       apt:

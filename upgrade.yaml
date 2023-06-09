@@ -8,6 +8,9 @@
     - proxmox
     - lb
     - utils
+    - lb-k8s-ek
+    - lb-k8s-alleninkt
+    - lb-k8s-tixwaves
   tasks:
     - name: Update package index
       apt:

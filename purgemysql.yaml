@@ -1,0 +1,27 @@
+---
+- name: Configure systemd timer for MySQL
+  hosts: alleninkt
+  gather_facts: false
+
+  vars:
+    mysql_root_password: vhCQ09ZYXKz38G6dWaTRsf
+
+  tasks:
+    - name: Create systemd timer unit file
+      become: true
+      template:
+        src: templates/mysql_purge_logs.timer.j2
+        dest: /etc/systemd/system/mysql_purge_logs.timer
+
+    - name: Create systemd service unit file
+      become: true
+      template:
+        src: templates/mysql_purge_logs.service.j2
+        dest: /etc/systemd/system/mysql_purge_logs.service
+
+    - name: Start and enable the timer
+      become: true
+      systemd:
+        name: mysql_purge_logs.timer
+        state: started
+        enabled: yes

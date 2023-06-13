@@ -1,0 +1,8 @@
+[Unit]
+Description=MySQL Binary Log Purge Service
+
+[Service]
+ExecStart=/usr/bin/mysql -uroot -p{{ mysql_root_password }} -e "PURGE BINARY LOGS BEFORE NOW()"
+
+[Install]
+WantedBy=multi-user.target

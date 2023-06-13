@@ -1,0 +1,9 @@
+[Unit]
+Description=MySQL Binary Log Purge Timer
+
+[Timer]
+OnCalendar=*-*-* *:0,15,30,45:00
+Unit=mysql_purge_logs.service
+
+[Install]
+WantedBy=timers.target

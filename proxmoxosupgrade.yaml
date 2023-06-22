@@ -1,0 +1,25 @@
+---
+- name: Update APT sources and upgrade
+  hosts: your_hosts
+  tasks:
+    - name: Replace 'bullseye' with 'bookworm' in ceph.list
+      lineinfile:
+        path: /etc/apt/sources.list.d/ceph.list
+        regexp: 'bullseye'
+        line: 'bookworm'
+      notify: Update APT cache
+
+    - name: Replace 'bullseye' with 'bookworm' in sources.list
+      lineinfile:
+        path: /etc/apt/sources.list
+        regexp: 'bullseye'
+        line: 'bookworm'
+      notify: Update APT cache
+
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Perform system upgrade
+      apt:
+        upgrade: dist

@@ -1,0 +1,41 @@
+---
+- name: install s3 docker
+  hosts: all
+  become: false
+  tasks:
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker
+        state: present
+
+    - name: Create directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - /root/monocker
+        - /root/watchtower
+        - /root/s3
+
+    - name: Copy docker-compose files to the server
+      template:
+        src: "files/{{ item }}.yml"
+        dest: "{{ item }}/docker-compose.yml"
+      loop:
+        - monocker
+        - watchtower
+        - s3
+  
+    - name: Start docker-compose
+      shell: "docker-compose up -d"
+      args:
+        chdir: "{{ item }}"
+      loop:
+        - /root/monocker
+        - /root/watchtower
+        - /root/s3

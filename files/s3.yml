@@ -1,5 +1,4 @@
 version: "3"
-
 services:
   minio:
     image: minio/minio:latest
@@ -15,4 +14,4 @@ services:
       - CONSOLE_SECRET_KEY=test
     command: server --address ":9000" --console-address ":9001" /data
     volumes:
-      - minio_data:/data
+      - /mnt/data:/data

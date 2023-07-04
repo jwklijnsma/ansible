@@ -1,0 +1,12 @@
+version: "3"
+services:
+  loki:
+    image: grafana/loki
+    volumes:
+      - /root/loki/loki.yml:/etc/loki/loki.yaml
+      - /root/loki/data:/data:rw
+      - /root/loki/rules:/etc/loki/rules:rw
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki.yaml
+    restart: always

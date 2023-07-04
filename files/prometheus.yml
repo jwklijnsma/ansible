@@ -1,0 +1,19 @@
+version: '3'
+services:
+  prometheus:
+    image: prom/prometheus
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Amsterdam
+    ports:
+      - "9090:9090"
+    volumes:
+      - /root/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /root/prometheus/node_exporter.crt:/etc/prometheus/node_exporter.crt
+      - /root/prometheus/prometheus-data:/prometheus:rw
+      - /root/prometheus/rules.yml:/etc/prometheus/rules.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    restart: always

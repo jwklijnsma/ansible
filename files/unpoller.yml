@@ -1,0 +1,16 @@
+# This is for unifi-poller v2.
+version: '3'
+services:
+  unifi-poller:
+    restart: always
+    image: ghcr.io/unpoller/unpoller
+    ports:
+    - 9130:9130
+    environment:
+     - UP_UNIFI_DYNAMIC=false
+     - UP_UNIFI_CONTROLLER_0_URL="https://unifi.home.janwiebe.eu"
+     - UP_UNIFI_CONTROLLER_0_USER="admin"
+     - UP_UNIFI_CONTROLLER_0_PASS="GHz49wcqhogedijk"
+     - UP_UNIFI_CONTROLLER_1_URL="https://10.0.3.22:8443"
+     - UP_UNIFI_CONTROLLER_1_USER="admin"
+     - UP_UNIFI_CONTROLLER_1_PASS="GHz49wcqhogedijk"

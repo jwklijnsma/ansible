@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  prometheus-pve-exporter:
+    container_name: prometheus-pve-exporter
+    image: prompve/prometheus-pve-exporter
+
+    volumes:
+      - /root/pve-exporter/config/pve.yml:/etc/pve.yml
+    ports:
+      - 9221:9221
+    restart: always

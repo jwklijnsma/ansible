@@ -19,7 +19,7 @@
 
 - name: Update SSL certificates spam
   hosts:
-    - spam
+    - mx
   tasks:
     - name: Copy SSL certificate to host
       copy:
